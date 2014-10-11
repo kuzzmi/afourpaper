@@ -1,3 +1,14 @@
+/**
+   aForPaper
+   pngToData.cpp
+   Purpose: Provides functions to calculate pixel offset and crop image.
+
+
+*/
+
+
+
+
 #include <opencv2/core/core.hpp>
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
@@ -12,12 +23,16 @@
 #define ROW_VALUE_THRESHOLD 50
 #define INITIAL_LOWEST_ERROR_AMOUNT 10000
 #define ERROR_TOLERANCE 1
-
-
+#define OFFSET_CHECK_AMOUNT 10
+#define PATTERN_PIXEL_DIM 4
 
 
 using namespace cv;
 using namespace std;
+
+
+
+
 
 int main(int argc, char** argv)
 {
@@ -29,7 +44,6 @@ int main(int argc, char** argv)
 	
 	Mat image;
 	image = imread(argv[1], CV_LOAD_IMAGE_COLOR);
-
 	if(!image.data)
 	{
 		cout<<"Could not open or find image"<<endl;
@@ -201,12 +215,17 @@ for(int i=size.height-1; i>0; i--)
 	//Pattern matching	
 	
 	size = cropped.size();
+
+
 	
-	int lowestError=10000;
+
+	
+	int lowestError=INITIAL_LOWEST_ERROR_AMOUNT;
 	int lowestErrorOffset=0;
+	float pixelDistances[OFFSET_CHECK_AMOUNT];
 
 
-	for(int u=0;u<10;u++){
+	for(int u=0;u<OFFSET_CHECK_AMOUNT;u++){
 
 		int amount_of_distances=0;	
 		int lastDistance=0;	
@@ -256,13 +275,88 @@ for(int i=size.height-1; i>0; i--)
 			lowestError=error_count;
 			lowestErrorOffset = u;
 		}
-
-
-		cout<<"Distance: "<<size.width/amount_of_distances<<endl;
-		cout<<"Error count: "<<error_count<<endl;
+		pixelDistances[u] = (float)size.width/(amount_of_distances+PATTERN_PIXEL_DIM);
+		cout<<"Pixel distance: "<<pixelDistances[u]<<endl;
+		//cout<<"Distance: "<<size.width/amount_of_distances<<endl;
+		//cout<<"Error count: "<<error_count<<endl;
 	}
 
 	cout<<"Lowest error offset: "<<lowestErrorOffset<<endl;
+
+	float  yPixelOffset = pixelDistances[lowestErrorOffset];	
+
+	lowestError=INITIAL_LOWEST_ERROR_AMOUNT;
+	lowestErrorOffset=0;
+
+
+
+	for(int u=0;u<OFFSET_CHECK_AMOUNT;u++){
+
+		int amount_of_distances=0;	
+		int lastDistance=0;	
+		int distance=0;
+		bool inPattern=true;
+		int lastVal = 255;	
+		bool inWhite=false;
+		bool lastInWhite=false;
+	
+		int error_count=0;
+		
+
+		for(int i=0; i<size.height; i++){
+			Vec3b pixelData = cropped.at<Vec3b>(i,u);
+			int val = (pixelData[0] + pixelData[1] + pixelData[2])/3;
+			
+			//cout<<"i: "<<i<<" val: "<<val<<endl;
+			distance++;
+	
+			if((lastVal+val)/2>128)
+			{
+				inWhite=true;
+				//cout<<"inwhite: "<<i<<endl;
+			}	
+			else{
+				inWhite=false;
+				//cout<<"inBlack: "<<i<<endl;
+			}
+	
+			if(lastInWhite!=inWhite)
+			{	
+				int err = abs(lastDistance-distance);
+				if(err>1)
+					error_count+=err;		
+				amount_of_distances++;
+				lastDistance=distance;
+				distance=0;
+			}
+				
+			lastInWhite=inWhite;
+			lastVal = val;
+
+		}
+	
+		if(error_count<lowestError)
+		{
+			lowestError=error_count;
+			lowestErrorOffset = u;
+		}
+		pixelDistances[u] = (float)size.height/(amount_of_distances+PATTERN_PIXEL_DIM);
+		cout<<"Pixel distance: "<<pixelDistances[u]<<endl;
+
+		//cout<<"Distance: "<<size.width/amount_of_distances<<endl;
+		//icout<<"Error count: "<<error_count<<endl;
+	}
+
+	cout<<"Lowest error offset: "<<lowestErrorOffset<<endl;
+
+
+	float  xPixelOffset=pixelDistances[lowestErrorOffset];
+
+	
+
+	cout<<"Horizontal pixels: "<<size.width/xPixelOffset<<endl;
+	cout<<"Vertical pixels: "<<size.height/yPixelOffset<<endl;	
+
 
 /*
 	for(int i=0; i<cropped.width; i++)
