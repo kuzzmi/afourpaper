@@ -1,6 +1,8 @@
 #!/usr/bin/python
 import os, sys, argparse, tempfile
 import imageMapper as im
+import gzip
+
 
 def readInString(filename):
     string = ''
@@ -18,9 +20,15 @@ if __name__ == '__main__':
     parser.add_argument('tmpdir', help='the temporary directory that will be used')
 
     args = parser.parse_args()
+	
+    with open(args.filename, "rb") as file_in:
+        with gzip.open(args.filename+"_c", "wb") as file_out:
+            file_out.writelines(file_in)
+
+
 
     fname = tempfile.mkstemp(suffix='.png', dir=args.tmpdir)[-1]
-    im.encodeData(args.filename, readInString(args.file), fname)
+    im.encodeData(args.filename+"_c", readInString(args.file), fname)
 
     print fname
 

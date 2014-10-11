@@ -72,6 +72,10 @@ def encodeData(filename, data, outputFile, bw=True):
     data is the data contained in the file passed as string
     outputFile is a file stream where the image will be written"""
 
+
+
+
+
     bfilename = colorizeData(filename, bw)
     bdata = colorizeData(data, bw)
     [width,height] = computeSize(bfilename, bdata)
