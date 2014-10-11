@@ -1,6 +1,6 @@
 #!/usr/bin/python
 from math import sqrt, ceil, floor
-import png
+import os, png
 
 """
 This script has the following purposes:
@@ -167,7 +167,7 @@ def encodeData(filename, data, outputFile, bw=True):
     with open(outputFile, "w") as fs:
         writer.write(fs, imagePlain)
 
-def decodeData(imageFile):
+def decodeData(imageFile, directory):
     reader = png.Reader(imageFile)
     (width, height, pixel, metadata) = reader.asRGB8()
 
@@ -218,12 +218,10 @@ def decodeData(imageFile):
     [fname, offset] = decolorizeData(btotData, 48, fnamesize)
     [content, offset] = decolorizeData(btotData, offset, datasize)
 
-    ## Debug
-#    bb = btotData[offset:]
-#    for i in range(16):
-#        print bb[i]
-#
-    with open('tmp/'+fname, 'w') as fs:
+    path = os.path.join(directory, fname)
+
+    with open(path, 'w') as fs:
         fs.write(content)
 
+    return path
 
