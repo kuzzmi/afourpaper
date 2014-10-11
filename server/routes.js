@@ -23,8 +23,17 @@ module.exports = function(app) {
             'python', [__dirname + '/imagetools/imageEncode.py', './' + req.files.file.path, req.files.file.originalname, './uploads']
         ).stdout.on('data', function(data) {
             var absPath = data.toString().trim();
-            // res.download(absPath);
-            res.download('./' + req.files.file.path);
+
+            var base64data;
+
+            fs.readFile(absPath, function(err, data) {
+                base64data = new Buffer(data).toString('base64');
+
+                res.set({
+                    'Content-Transfer-Encoding': 'base64'
+                });
+                res.send(base64data);
+            });
         });
     });
 

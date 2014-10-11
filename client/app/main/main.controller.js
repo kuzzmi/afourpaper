@@ -59,7 +59,7 @@ angular.module('afourpaperApp')
                     console.log(data);
                     var element = angular.element('<a/>');
                     element.attr({
-                        href: 'data:attachment/octet-stream;charset=utf-8,' + encodeURIComponent(data),
+                        href: 'data:attachment/png;base64,' + encodeURIComponent(data),
                         target: '_blank',
                         download: 'encrypted.png'
                     })[0].click();
