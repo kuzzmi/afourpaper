@@ -1,5 +1,14 @@
 #include "Image.h"
+#include "lodepng.h"
 #include <deque>
+
+Image::Image(const std::string& imagePath)
+{
+    unsigned width, height;
+    unsigned error = lodepng::decode(pixels_, width, height, imagePath.c_str());
+    width_ = width;
+    height_ = height;
+}
 
 Image::Image(int namebytes, int databytes)
 {
@@ -32,8 +41,6 @@ Image::Image(int namebytes, int databytes)
 void Image::WriteImage(const std::string& path) const
 {
     unsigned error = lodepng::encode(path.c_str(), pixels_, width_, height_);
-    if(!error)
-        std::cout << "Image " << path << " saved correctly\n";
 }
 
 void Image::SetupCorners()
@@ -88,8 +95,6 @@ void Image::WriteData(const std::string& filename, const std::vector<char>& data
     int m = data.size();
     int namelength = filename.size();
 
-    std::cout << "data size is " << m << std::endl;
-
     // Fill predata
     const int predatasize = 4+2+namelength;
     std::vector<char> predata(predatasize);
@@ -105,8 +110,6 @@ void Image::WriteData(const std::string& filename, const std::vector<char>& data
     }
 
     m += predatasize;
-
-    std::cout << "total size is " << m << std::endl;
 
     // Fill boolean values
     std::vector<bool> values(m*8);
@@ -161,3 +164,76 @@ void Image::WriteData(const std::string& filename, const std::vector<char>& data
     return;
 }
 
+void Image::GetData(std::string& filename, std::vector<char>& data) const
+{
+    std::vector<bool> values(width_*height_-64-(width_-8)-(height_-8));
+
+    // Read into boolean vector
+    int n = 0;
+
+    // First portion: three lines at the top
+    for (int r = 1; r < 4; ++r)
+        for (int c = 4; c < width_-4; ++c)
+        {
+            values[n] = ReadFrom(r, c);
+            ++n;
+        }
+
+    // Second portion: main part
+    for (int r = 4; r < height_-4; ++r)
+        for (int c = 1; c < width_; ++c)
+        {
+            values[n] = ReadFrom(r, c);
+            ++n;
+        }
+
+    // Third portion: three bottom lines
+    for (int r = height_-4; r < height_; ++r)
+        for (int c = 4; c < width_-4; ++c)
+        {
+            values[n] = ReadFrom(r, c);
+            ++n;
+        }
+
+    // Process data size
+    int datasize = 0;
+    for (int i = 0; i < 32; ++i)
+    {
+        datasize += (values[i] ? 1 : 0) << (31-i);
+    }
+    int offset = 32;
+
+    // Process filename size
+    int fnamesize = 0;
+    for (int i = 0; i < 16; ++i)
+    {
+        fnamesize += (values[offset+i] ? 1 : 0) << (15-i);
+    }
+    offset += 16;
+
+    // Read filename
+    filename.resize(fnamesize);
+    for (int i = 0; i < fnamesize; ++i)
+    {
+        char c = 0;
+        for (int bit = 0; bit < 8; ++bit)
+        {
+            c += (values[offset+bit] ? 1 : 0) << (7-bit);
+        }
+        filename[i] = c;
+        offset += 8;
+    }
+
+    // Read data
+    data.resize(datasize);
+    for (int i = 0; i < datasize; ++i)
+    {
+        char c = 0;
+        for (int bit = 0; bit < 8; ++bit)
+        {
+            c += (values[offset+bit] ? 1 : 0) << (7-bit);
+        }
+        data[i] = c;
+        offset += 8;
+    }
+}
