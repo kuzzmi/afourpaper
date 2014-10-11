@@ -19,10 +19,8 @@ if __name__ == '__main__':
 
     args = parser.parse_args()
 
-    print "Parsing", args.file
-    print "Putting output into", args.tmpdir
+    fname = tempfile.mkstemp(suffix='.png', dir=args.tmpdir)[-1]
+    im.encodeData(args.filename, readInString(args.file), fname)
 
-    fs = tempfile.mkstemp(suffix='png', dir=args.tmpdir)[-1]
-    print fs
-    im.encodeData(args.filename, readInString(args.file), fs)
+    print fname
 
