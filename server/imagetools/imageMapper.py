@@ -16,9 +16,6 @@ def byteToBW(byte):
         byte -= v*(2**i)
         v = (1-v)*255
         s.append([v,v,v])
-
-        if v < 0 or v > 255:
-            print "Oh, god!", obyte
     return s
 
 
@@ -64,7 +61,7 @@ def encodeData(filename, data, outputFile, bw=True):
     [width,height] = computeSize(bfilename, bdata)
 
     # Create image structure
-    image = [[[125,125,125] for c in range(width)] for r in range(height)]
+    image = [[[255,255,255] for c in range(width)] for r in range(height)]
 
     # Create upper left pattern
     for r in range(0,4):
@@ -149,12 +146,6 @@ def encodeData(filename, data, outputFile, bw=True):
         for c in range(width):
             myrow = myrow + image[r][c]
         imagePlain.append(myrow)
-
-    for ir,r in enumerate(imagePlain):
-        for ic,c in enumerate(r):
-            if c < 0 or c > 255:
-                print ir, ic, c
-
 
     writer = png.Writer(height=height, width=width)
     with open(outputFile, "w") as fs:
