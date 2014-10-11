@@ -22,16 +22,18 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
 	
-    with open(args.file, "rb") as file_in:
-       with gzip.open(args.file+"_c", "wb") as file_out:
-          file_out.writelines(file_in)
+    #with open(args.file, "rb") as file_in:
+    #   with gzip.open(args.file+"_c", "wb") as file_out:
+    #      file_out.writelines(file_in)
 
 
     fname = tempfile.mkstemp(suffix='.png', dir=args.tmpdir)[-1]
 
 
 
-    im.encodeData(args.filename, readInString(args.file+"_c"), fname)
+    #im.encodeData(args.filename, readInString(args.file+"_c"), fname)
 
+    im.encodeData(args.filename, readInString(args.file), fname)
+		
     print fname
 
