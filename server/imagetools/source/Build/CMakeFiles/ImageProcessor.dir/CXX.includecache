@@ -11,6 +11,12 @@ opencv2/core/core.hpp
 -
 opencv2/highgui/highgui.hpp
 -
+opencv2/imgproc/imgproc.hpp
+-
 iostream
+-
+stdio.h
+-
+cmath
 -
 
