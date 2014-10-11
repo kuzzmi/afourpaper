@@ -50,6 +50,22 @@ def colorizeData(data, bw=True):
 
     return bdata
 
+def decolorizeData(bdata, offset, length):
+    # Black and white
+    data = ''
+    endoffset = offset + length*8
+    while offset < endoffset:
+        char = 0
+        e = 1
+        for o in range(offset+7, offset-1, -1):
+            v = 1 if bdata[o][0] == 0 else 0
+            char += v*e
+            e *= 2
+        data += chr(char)
+        offset += 8
+    return [data, offset]
+
+
 def encodeData(filename, data, outputFile, bw=True):
     """Encodes data in a file into a PNG image
     filename is the original name of the file
@@ -150,3 +166,64 @@ def encodeData(filename, data, outputFile, bw=True):
     writer = png.Writer(height=height, width=width)
     with open(outputFile, "w") as fs:
         writer.write(fs, imagePlain)
+
+def decodeData(imageFile):
+    reader = png.Reader(imageFile)
+    (width, height, pixel, metadata) = reader.asRGB8()
+
+    # Create plain image
+    imagePlain = [list(r) for r in pixel]
+
+    ## Pack pixels
+    image = [[[] for c in range(width)] for r in range(height)]
+    for r in range(height):
+        for c in range(width):
+            image[r][c] = imagePlain[r][3*c:3*(c+1)]
+
+    ## Serialze actual data
+    btotData = []
+
+    # Region 1
+    for r in range(1,4):
+        for c in range(4, width-4):
+            btotData.append(image[r][c])
+
+    # Region 2
+    for r in range(4,height-4):
+        for c in range(1, width):
+            btotData.append(image[r][c])
+
+    # Region 3
+    for r in range(height-4,height):
+        for c in range(4, width-4):
+            btotData.append(image[r][c])
+
+    ## Decode datasize
+    e = 1
+    datasize = 0
+    for i in range(31,-1,-1):
+        v = 1 if btotData[i][0] == 0 else 0
+        datasize += e*v
+        e *= 2
+
+    ## Decode filename size
+    e = 1
+    fnamesize = 0
+    for i in range(47,31,-1):
+        v = 1 if btotData[i][0] == 0 else 0
+        fnamesize += e*v
+        e *= 2
+
+    ## Decode filename and content
+    [fname, offset] = decolorizeData(btotData, 48, fnamesize)
+    [content, offset] = decolorizeData(btotData, offset, datasize)
+
+    ## Debug
+#    bb = btotData[offset:]
+#    for i in range(16):
+#        print bb[i]
+#
+    with open('tmp/'+fname, 'w') as fs:
+        fs.write(content)
+
+
