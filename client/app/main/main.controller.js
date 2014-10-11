@@ -57,6 +57,12 @@ angular.module('afourpaperApp')
                 }).success(function(data, status, headers, config) {
                     // file is uploaded successfully
                     console.log(data);
+                    var element = angular.element('<a/>');
+                    element.attr({
+                        href: 'data:attachment/octet-stream;charset=utf-8,' + encodeURIComponent(data),
+                        target: '_blank',
+                        download: 'encrypted.png'
+                    })[0].click();
                 });
                 //.error(...)
                 //.then(success, error, progress); 

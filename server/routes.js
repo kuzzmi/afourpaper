@@ -5,7 +5,7 @@
 'use strict';
 
 var errors = require('./components/errors');
-
+var fs = require('fs');
 module.exports = function(app) {
 
     // Insert routes below
@@ -18,9 +18,13 @@ module.exports = function(app) {
     }));
 
     app.post('/api/upload', function(req, res, next) {
-        console.log(req.headers, req.files);
-        res.json({
-            status: 'ok'
+        console.log(req.headers, req.files, __dirname);
+        var python = require('child_process').spawn(
+            'python', [__dirname + '/imagetools/imageEncode.py', './' + req.files.file.path, req.files.file.originalname, './uploads']
+        ).stdout.on('data', function(data) {
+            var absPath = data.toString().trim();
+            // res.download(absPath);
+            res.download('./' + req.files.file.path);
         });
     });
 
