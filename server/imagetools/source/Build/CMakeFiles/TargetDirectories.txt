@@ -1,1 +1,2 @@
 /home/igor/afourpaper/server/imagetools/source/Build/CMakeFiles/ImageProcessor.dir
+/home/igor/afourpaper/server/imagetools/source/Build/CMakeFiles/NewImageProcessor.dir

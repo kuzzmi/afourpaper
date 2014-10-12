@@ -88,6 +88,41 @@ clean: CMakeFiles/ImageProcessor.dir/clean
 .PHONY : clean
 
 #=============================================================================
+# Target rules for target CMakeFiles/NewImageProcessor.dir
+
+# All Build rule for target.
+CMakeFiles/NewImageProcessor.dir/all:
+	$(MAKE) -f CMakeFiles/NewImageProcessor.dir/build.make CMakeFiles/NewImageProcessor.dir/depend
+	$(MAKE) -f CMakeFiles/NewImageProcessor.dir/build.make CMakeFiles/NewImageProcessor.dir/build
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/igor/afourpaper/server/imagetools/source/Build/CMakeFiles  2
+	@echo "Built target NewImageProcessor"
+.PHONY : CMakeFiles/NewImageProcessor.dir/all
+
+# Include target in all.
+all: CMakeFiles/NewImageProcessor.dir/all
+.PHONY : all
+
+# Build rule for subdir invocation for target.
+CMakeFiles/NewImageProcessor.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/igor/afourpaper/server/imagetools/source/Build/CMakeFiles 1
+	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/NewImageProcessor.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/igor/afourpaper/server/imagetools/source/Build/CMakeFiles 0
+.PHONY : CMakeFiles/NewImageProcessor.dir/rule
+
+# Convenience name for target.
+NewImageProcessor: CMakeFiles/NewImageProcessor.dir/rule
+.PHONY : NewImageProcessor
+
+# clean rule for target.
+CMakeFiles/NewImageProcessor.dir/clean:
+	$(MAKE) -f CMakeFiles/NewImageProcessor.dir/build.make CMakeFiles/NewImageProcessor.dir/clean
+.PHONY : CMakeFiles/NewImageProcessor.dir/clean
+
+# clean rule for target.
+clean: CMakeFiles/NewImageProcessor.dir/clean
+.PHONY : clean
+
+#=============================================================================
 # Special targets to cleanup operation of make.
 
 # Special rule to run CMake to check the build system integrity.

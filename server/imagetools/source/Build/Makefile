@@ -111,6 +111,43 @@ ImageProcessor/fast:
 	$(MAKE) -f CMakeFiles/ImageProcessor.dir/build.make CMakeFiles/ImageProcessor.dir/build
 .PHONY : ImageProcessor/fast
 
+#=============================================================================
+# Target rules for targets named NewImageProcessor
+
+# Build rule for target.
+NewImageProcessor: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 NewImageProcessor
+.PHONY : NewImageProcessor
+
+# fast build rule for target.
+NewImageProcessor/fast:
+	$(MAKE) -f CMakeFiles/NewImageProcessor.dir/build.make CMakeFiles/NewImageProcessor.dir/build
+.PHONY : NewImageProcessor/fast
+
+newtest.o: newtest.cpp.o
+.PHONY : newtest.o
+
+# target to build an object file
+newtest.cpp.o:
+	$(MAKE) -f CMakeFiles/NewImageProcessor.dir/build.make CMakeFiles/NewImageProcessor.dir/newtest.cpp.o
+.PHONY : newtest.cpp.o
+
+newtest.i: newtest.cpp.i
+.PHONY : newtest.i
+
+# target to preprocess a source file
+newtest.cpp.i:
+	$(MAKE) -f CMakeFiles/NewImageProcessor.dir/build.make CMakeFiles/NewImageProcessor.dir/newtest.cpp.i
+.PHONY : newtest.cpp.i
+
+newtest.s: newtest.cpp.s
+.PHONY : newtest.s
+
+# target to generate assembly for a file
+newtest.cpp.s:
+	$(MAKE) -f CMakeFiles/NewImageProcessor.dir/build.make CMakeFiles/NewImageProcessor.dir/newtest.cpp.s
+.PHONY : newtest.cpp.s
+
 pngToData.o: pngToData.cpp.o
 .PHONY : pngToData.o
 
@@ -142,8 +179,12 @@ help:
 	@echo "... clean"
 	@echo "... depend"
 	@echo "... ImageProcessor"
+	@echo "... NewImageProcessor"
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
+	@echo "... newtest.o"
+	@echo "... newtest.i"
+	@echo "... newtest.s"
 	@echo "... pngToData.o"
 	@echo "... pngToData.i"
 	@echo "... pngToData.s"

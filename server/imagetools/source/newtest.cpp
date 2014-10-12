@@ -207,7 +207,7 @@ int main(int argc, char **argv)
     imwrite("output.png", cropped);
 
     // Create result image
-    Mat result = cvCreateImage(cvSize(nr,nc),8,3);
+    Mat result = cvCreateImage(cvSize(3*nr,3*nc),8,3);
     for (int r = 0; r < nr; ++r)
         for (int c = 0; c < nc; ++c)
         {
