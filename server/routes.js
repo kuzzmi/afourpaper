@@ -20,37 +20,33 @@ module.exports = function(app) {
 
     app.post('/api/upload/encode', function(req, res, next) {
         // if (req.cookies.token)
-        var client = new Evernote.Client({
-            token: req.cookies.token
-        });
-        var noteStore = client.getNoteStore();
-        var notebooks = noteStore.listNotebooks(function(err, notebooks) {
-            // run this code
-            console.log(err, notebooks);
-        });
         // console.log(req.cookies.token);
         // return;
         console.log(req.headers, req.files, __dirname);
+        var output = require("randomstring").generate(12);
         var python = require('child_process').spawn(
-            'python', [__dirname + '/imagetools/imageEncode.py', './' + req.files.file.path, req.files.file.originalname, './uploads']
+            __dirname + '/imagetools/encoder/bin/encode', ['./' + req.files.file.path, req.files.file.originalname, './uploads/' + output + '.png']
         ).stdout.on('data', function(data) {
-            var absPath = data.toString().trim();
+            var absPath = '/home/kuzzmi/Projects/afourpaper/uploads/' + output + '.png';
+
 
             var base64data;
 
             fs.readFile(absPath, function(err, data) {
+                console.log(absPath);
                 base64data = new Buffer(data).toString('base64');
 
                 res.set({
                     'Content-Transfer-Encoding': 'base64'
                 });
 
-                res.send(base64data);
+                res.send(base64data, 200);
 
-                res.on('finish', function() {
-                    fs.unlinkSync(absPath);
-                    fs.unlinkSync('./' + req.files.file.path);
-                });
+                // res.on('finish', function() {
+                // res.end();
+                // fs.unlinkSync(absPath);
+                // fs.unlinkSync('./' + req.files.file.path);
+                // });
             });
         });
     });
@@ -58,7 +54,8 @@ module.exports = function(app) {
     app.post('/api/upload/decode', function(req, res, next) {
         console.log(req.headers, req.files, __dirname);
         var python = require('child_process').spawn(
-            'python', [__dirname + '/imagetools/imageDecode.py', './' + req.files.file.path, './uploads']
+            __dirname + '/imagetools/encoder/bin/decode', ['./' + req.files.file.path, './uploads']
+            // 'python', [__dirname + '/imagetools/imageDecode.py', './' + req.files.file.path, './uploads']
         ).stdout.on('data', function(data) {
             var absPath = data.toString().trim();
             var filename = absPath.split('/').pop();
@@ -72,14 +69,16 @@ module.exports = function(app) {
                 res.set({
                     'Content-Transfer-Encoding': 'base64'
                 });
+
                 res.send({
                     data: base64data,
                     filename: filename
                 });
 
                 res.on('finish', function() {
-                    fs.unlinkSync(absPath);
-                    fs.unlinkSync('./' + req.files.file.path);
+                    res.end();
+                    // fs.unlinkSync(absPath);
+                    // fs.unlinkSync('./' + req.files.file.path);
                 });
             });
         });

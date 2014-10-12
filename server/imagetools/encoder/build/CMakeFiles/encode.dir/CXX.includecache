@@ -1,0 +1,30 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/kuzzmi/Projects/afourpaper/server/imagetools/encoder/Image.h
+vector
+-
+cmath
+-
+string
+-
+iostream
+-
+
+/home/kuzzmi/Projects/afourpaper/server/imagetools/encoder/encode.cpp
+Image.h
+/home/kuzzmi/Projects/afourpaper/server/imagetools/encoder/Image.h
+string
+-
+vector
+-
+fstream
+-
+cstdlib
+-
+

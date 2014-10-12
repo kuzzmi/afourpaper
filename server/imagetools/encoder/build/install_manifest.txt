@@ -1,0 +1,2 @@
+/home/kuzzmi/Projects/afourpaper/server/imagetools/encoder/build/../bin/encode
+/home/kuzzmi/Projects/afourpaper/server/imagetools/encoder/build/../bin/decode

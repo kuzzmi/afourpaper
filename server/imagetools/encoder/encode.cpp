@@ -39,5 +39,7 @@ int main(int argc, char **argv)
     image.WriteData(filename, data);
     image.WriteImage(output);
 
+    std::cout << output << "\n";
+
     return 0;
 }

@@ -1,0 +1,2 @@
+/usr/bin/ar cr libImageLibrary.a  CMakeFiles/ImageLibrary.dir/Image.cpp.o CMakeFiles/ImageLibrary.dir/lodepng.cpp.o
+/usr/bin/ranlib libImageLibrary.a

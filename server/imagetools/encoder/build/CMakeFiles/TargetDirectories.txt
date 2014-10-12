@@ -1,0 +1,3 @@
+/home/kuzzmi/Projects/afourpaper/server/imagetools/encoder/build/CMakeFiles/ImageLibrary.dir
+/home/kuzzmi/Projects/afourpaper/server/imagetools/encoder/build/CMakeFiles/decode.dir
+/home/kuzzmi/Projects/afourpaper/server/imagetools/encoder/build/CMakeFiles/encode.dir
