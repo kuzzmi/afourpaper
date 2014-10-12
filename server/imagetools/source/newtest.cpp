@@ -7,6 +7,7 @@
 #include <cmath>
 
 using namespace cv;
+using namespace std;
 
 int main(int argc, char **argv)
 {
@@ -206,8 +207,12 @@ int main(int argc, char **argv)
 
     imwrite("output.png", cropped);
 
+    cout<<"Igor Output: "<<nr<<" : "<<nc<<endl;
+
+
     // Create result image
-    Mat result = cvCreateImage(cvSize(3*nr,3*nc),8,3);
+    Mat result = cvCreateImage(cvSize(nc,nr),8,3);
+
     for (int r = 0; r < nr; ++r)
         for (int c = 0; c < nc; ++c)
         {
@@ -215,9 +220,9 @@ int main(int argc, char **argv)
             double cc = (c+.5)*leapc;
             int value = cropped.at<Vec3b>(rr, cc)[0];
             value = value < 100 ? 0 : 255;
-            result.at<Vec3b>(r, c) = Vec3b(value, value, value);
+            result.at<Vec3b>(Point(c,r)) = Vec3b(value, value, value);
         }
 
     imwrite("result.png", result);
-}
 
+}
