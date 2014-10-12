@@ -15,5 +15,11 @@ add_executable(
     ${SOURCES}
 )
 
+add_executable(
+    NewImageProcessor
+    "newtest.cpp"
+)
+
 target_link_libraries( ImageProcessor ${OpenCV_LIBS} )
+target_link_libraries( NewImageProcessor ${OpenCV_LIBS} )
 
