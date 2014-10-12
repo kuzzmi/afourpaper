@@ -11,7 +11,7 @@ using namespace std;
 
 #define OFFSET_THRESHOLD 80
 
-int MAX_SEARCH_OFFSET = 20;
+int MAX_SEARCH_OFFSET = 5;
 
 
 
@@ -19,7 +19,7 @@ Point goToMiddle(Mat* image, int x, int y){
     
     int xOffset = 0;
     int yOffset = 0;
-    int middleVal=(image->at<Vec3b>(x,y)[0]+image->at<Vec3b>(x,y)[1]+image->at<Vec3b>(x,y)[2])/3;
+    int middleVal=(image->at<Vec3b>(x,y)[0]+image->at<Vec3b>(x,y)[1]+image->at<Vec3b>(x,y)[2]);
     
     int marginLeft = 0;
     int marginTop = 0;
@@ -29,7 +29,7 @@ Point goToMiddle(Mat* image, int x, int y){
     Size size = image->size();
     while(true)
     {
-        if((x+MAX_SEARCH_OFFSET>size.width || x-MAX_SEARCH_OFFSET<0 || y+MAX_SEARCH_OFFSET>size.height || y-MAX_SEARCH_OFFSET<0)&&MAX_SEARCH_OFFSET>0)
+        if((x+MAX_SEARCH_OFFSET+2>size.width || x-MAX_SEARCH_OFFSET-2<0 || y+MAX_SEARCH_OFFSET+2>size.height || y-MAX_SEARCH_OFFSET-2<0)&&MAX_SEARCH_OFFSET>0)
 	    MAX_SEARCH_OFFSET--;	
         else
     	    break;
@@ -40,7 +40,7 @@ Point goToMiddle(Mat* image, int x, int y){
     int lastVal = middleVal;
     for(int i=x+1; i<MAX_SEARCH_OFFSET; i++)
     {
-	int val = (image->at<Vec3b>(i,y)[0]+image->at<Vec3b>(i,y)[1]+image->at<Vec3b>(i,y)[2])/3;
+	int val = (image->at<Vec3b>(i,y)[0]+image->at<Vec3b>(i,y)[1]+image->at<Vec3b>(i,y)[2]);
 	if(abs(lastVal-val>OFFSET_THRESHOLD))
 	{
 	    marginRight=i-x-1;
@@ -51,7 +51,7 @@ Point goToMiddle(Mat* image, int x, int y){
     lastVal = middleVal;
     for(int i=x-1; i>x-MAX_SEARCH_OFFSET; i--)
     {
-	int val = (image->at<Vec3b>(i,y)[0]+image->at<Vec3b>(i,y)[1]+image->at<Vec3b>(i,y)[2])/3;
+	int val = (image->at<Vec3b>(i,y)[0]+image->at<Vec3b>(i,y)[1]+image->at<Vec3b>(i,y)[2]);
 	if(abs(lastVal-val>OFFSET_THRESHOLD))
 	{
 	    marginLeft=x-i+1;
@@ -62,7 +62,7 @@ Point goToMiddle(Mat* image, int x, int y){
     lastVal = middleVal;
     for(int i=y+1; i<MAX_SEARCH_OFFSET; i++)
     {
-	int val = (image->at<Vec3b>(x,i)[0]+image->at<Vec3b>(x,i)[1]+image->at<Vec3b>(x,i)[2])/3;
+	int val = (image->at<Vec3b>(x,i)[0]+image->at<Vec3b>(x,i)[1]+image->at<Vec3b>(x,i)[2]);
 	if(abs(lastVal-val>OFFSET_THRESHOLD))
 	{
 	    marginTop=i-y-1;
@@ -74,7 +74,7 @@ Point goToMiddle(Mat* image, int x, int y){
     lastVal = middleVal;
     for(int i=y-1; i>y-MAX_SEARCH_OFFSET; i--)
     {
-	int val = (image->at<Vec3b>(x,i)[0]+image->at<Vec3b>(x,i)[1]+image->at<Vec3b>(x,i)[2])/3;
+	int val = (image->at<Vec3b>(x,i)[0]+image->at<Vec3b>(x,i)[1]+image->at<Vec3b>(x,i)[2]);
 	if(abs(lastVal-val>OFFSET_THRESHOLD))
 	{
 	    marginBottom=y-i+1;
@@ -84,6 +84,10 @@ Point goToMiddle(Mat* image, int x, int y){
 
     xOffset = marginRight-marginLeft;
     yOffset = marginTop-marginBottom;
+
+    cout <<marginLeft<<" "<<marginTop<<" " <<marginRight<<" "<<marginBottom<<endl;
+    cout<<"xOffset: "<<xOffset<<endl;
+    cout<<"yOffset: "<<yOffset<<endl;
 
     return Point(xOffset, yOffset);
 
@@ -284,6 +288,9 @@ int main(int argc, char **argv)
 
     size = cropped.size();
     // Add circles
+
+	
+	
     for (int r = 0; r < nr; ++r)
         for (int c = 0; c < nc; ++c)
         {
@@ -297,7 +304,7 @@ int main(int argc, char **argv)
 	    //center.y = (center.y+lastPoint.y+leapr)/2.;
 
             
-	    Point newPos = goToMiddle(&cropped, center.x, center.y);
+	    Point newPos ;//= goToMiddle(&cropped, center.x, center.y);
 	    newPos.x += center.x;
 	    newPos.y += center.y;
 
