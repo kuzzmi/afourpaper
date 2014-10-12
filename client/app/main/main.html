@@ -2,22 +2,131 @@
 
 <div class="hero" id="banner">
   <div class="container">
-    <h1>Welcome to aFourPaper!</h1>
-    <p class="lead">Encrypt and store everything just on a sheet of A4 paper</p>
+    <span ng-hide="isLoggedIn()">
+      <h1>Welcome to aFourPaper!</h1>
+      <p class="lead">Encrypt and store everything just on a sheet of A4 paper</p>
+      
+    </span>
+    <span ng-show="isLoggedIn()">
+      <h1>Welcome back, {{ getCurrentUser().name.split(' ')[0] }}!</h1><br />
+      <p class="lead">Now you can grant access for Evernote and store your files also there even more encrypted!</p>
+    </span>
     <div>
-      <div  ng-file-drop="onFileSelect($files)" 
-            class="file-drop-field" 
+      <div  ng-file-drop="onEncodeFileSelect($files)" 
+            class="file-drop-field-encode" 
             ng-file-drag-over-class="drag-over"
             ng-show="dropSupported">
-            Drop files here!
+            Drop files here to <b>encode</b>
       </div>
       <div ng-file-drop-available="dropSupported=true" 
-            ng-show="!dropSupported">HTML5 Drop File is not supported!</div>
-      </div>      
+            ng-show="!dropSupported">
+            HTML5 Drop File is not supported!
+      </div>
+      <div  ng-file-drop="onDecodeFileSelect($files)" 
+            class="file-drop-field-decode" 
+            ng-file-drag-over-class="drag-over"
+            ng-show="dropSupported">
+            Drop files here to <b>decode</b>
+      </div>
+
+      <!-- <div ng-hide="isLoggedIn()">
+        <button class="btn btn-twitter" href="" ng-click="loginOauth('twitter')">
+          <i class="fa fa-twitter"></i> Connect with Twitter
+        </button>
+      </div> -->
+      <div>
+        <span ng-hide="isLoggedIn()">
+          <button class="btn btn-evernote" href="" ng-click="loginOauth('evernote')">
+            <i class="fa fa-evernote"></i> Allow access to Evernote
+          </button>
+          <!-- <span class="asterix">*</span> -->
+        </span>
+
+        <!-- <span ng-show="isLoggedIn()">
+          <a href="" class='btn btn-twitter' ng-click="logout()"><i class="fa fa-twitter"></i> Logout</a>
+        </span> -->
+      </div>
+        <!-- <p class="after-asterix"> -->
+          <!-- With Evernote you can go further and store your<br /> information encrypted in any of your notebooks -->
+        <!-- </p> -->
     </div>
-</div>
-<footer class="footer">
-  <div class="container">
-      <p>aFourPaper Team (c) 2014</p>
   </div>
-</footer>
+</div>
+
+<div class="container promo-info" ng-hide="isLoggedIn()">
+      <div class="row promo-circles">
+        <div class="col-sm-4">
+          <img class="img-circle" src="assets/images/paper.jpg" alt="Generic placeholder image" style="width: 180px; height: 180px;">
+          <h2>One A4 page</h2>
+          <p>aFourPaper allows you to save every type of data on a sheet of paper. It's like the next step of evolution of QR codes, made especially for saving data over to 2.5 kB limit of QR codes.</p>
+          <p><a class="btn btn-default" href="http://getbootstrap.com/examples/carousel/#" role="button">View details »</a></p>
+        </div><!-- /.col-sm-4 -->
+        <div class="col-sm-4">
+          <img class="img-circle" src="assets/images/mouse.jpg" alt="Generic placeholder image" style="width: 180px; height: 180px;">
+          <h2>Simple access</h2>
+          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quia a, voluptates ab accusamus illo laborum perferendis, ullam vel, optio minus excepturi explicabo architecto quam inventore aspernatur quae consectetur earum tenetur.</p>
+          <p><a class="btn btn-default" href="http://getbootstrap.com/examples/carousel/#" role="button">View details »</a></p>
+        </div><!-- /.col-sm-4 -->
+        <div class="col-sm-4">
+          <img class="img-circle" src="http://placehold.it/350x350" alt="Generic placeholder image" style="width: 180px; height: 180px;">
+          <h2>Heading</h2>
+          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Odio sed qui sunt itaque explicabo aut, suscipit reprehenderit, distinctio atque nam omnis praesentium tempora rem numquam sint quis asperiores cupiditate optio!</p>
+          <p><a class="btn btn-default" href="http://getbootstrap.com/examples/carousel/#" role="button">View details »</a></p>
+        </div><!-- /.col-lg-4 -->
+      </div><!-- /.row -->
+
+      <hr class="promo-splitter">
+
+      <div class="row">
+        <div class="col-md-7">
+          <h2 class="promo-heading">For media. <span class="text-muted">It'll blow your mind.</span></h2>
+          <p class="lead">It's better to see something once than to read about it a thousand times. If you are a publisher you can offer more for your readers. You can extend your newspaper with your clients' smartphones. You can encode and print a .3GP video file which can be recognized by a smartphone.</p>
+        </div>
+        <div class="col-md-5">
+          <img class="promo-image img-responsive" src="/assets/images/newspaper.png">
+        </div>
+      </div>
+
+      <hr class="promo-splitter">
+
+      <div class="row">
+        <div class="col-md-5">
+          <img class="promo-image img-responsive" src="http://placehold.it/500x500">
+        </div>
+        <div class="col-md-7">
+          <h2 class="promo-heading">Oh yeah, it's that good. <span class="text-muted">See for yourself.</span></h2>
+          <p class="lead">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Soluta, sit, labore. At fugit libero hic eum molestiae laborum obcaecati voluptatum non consequatur, repellendus, accusantium saepe et optio debitis quidem quam!</p>
+        </div>
+      </div>
+
+      <hr class="promo-splitter">
+
+      <div class="row">
+        <div class="col-md-7">
+          <h2 class="promo-heading">And lastly, this one. <span class="text-muted">Checkmate.</span></h2>
+          <p class="lead">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto nam distinctio doloremque, a nostrum, nisi iusto veniam quas nobis amet, ex. Voluptatibus ab maiores deserunt sed omnis, in sapiente laborum.</p>
+        </div>
+        <div class="col-md-5">
+          <img class="promo-image img-responsive" src="http://placehold.it/500x500">
+        </div>
+      </div>
+
+      <hr class="promo-splitter">
+
+
+
+
+    </div><!-- /.container -->
+
+      <!-- FOOTER -->
+      <footer> 
+        <div class="container">
+          <div class="row">
+            <div class="col-sm-12">
+            
+              <p>© 2014 aFourPaper Team</p>
+              
+            </div>
+          </div>
+        </div> 
+      </footer>

@@ -21,3 +21,27 @@ $fa-font-path: "/bower_components/font-awesome/fonts";
 @import 'admin/admin.scss';
 @import 'main/main.scss';
 // endinjector
+
+@font-face {
+    font-family: 'OpenSans-Regular';
+    src: url(/assets/fonts/OpenSans-Regular.ttf);
+}
+
+@font-face {
+    font-family: 'Rokkitt-Bold';
+    src: url(/assets/fonts/Rokkitt-Bold.ttf);
+}
+
+html, body {
+    font-family: 'OpenSans-Regular', 'Verdana', 'Helvetica', sans-serif
+}
+
+h2 {
+    font-family: 'Rokkitt-Bold', serif;
+    font-size: 36px;
+    font-weight: 700;
+    &:after {
+        content: '';
+        display: block;
+    }
+}

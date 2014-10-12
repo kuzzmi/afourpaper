@@ -15,7 +15,7 @@
 
 .hero {
     position: relative;
-    padding: 120px 15px;
+    padding: 150px 15px;
     color: #F5F5F5;
     text-align: center;
     text-shadow: 0 1px 0 rgba(0, 0, 0, 0.1);
@@ -32,23 +32,93 @@
     }
 }
 
-.file-drop-field {
+.btn-twitter, .btn-evernote {
+    border-radius: 0;
+    margin-top: 25px;
+}
+
+.circles-container {
+    padding: 0;
+    height: 100%;
+    width: 100%;
+    // background-color: #00B2FF;
+    margin: 0;
+}
+
+.btn-default {
+    border-radius: 0;
+}
+
+.navbar {
+    height: 75px;
+}
+
+.asterix {
+    color: #fff;
+    background-color: #000; 
+    font-size: 20px;
+}
+
+.navbar-brand {
+    color: #3c3c3c;
+    font-size: 26px;
+    font-weight: bold;
+
+    img {
+        border: 10px solid white;
+    }
+}
+
+.after-asterix {
+    margin-top: 20px;
+    display: inline-block;
+}
+
+.file-drop-field-encode {
     display: inline-block;
     padding: 20px 30px;
     background-color: #ffcc00;
     color: #000;
     font-size: 24px;
+    &.drag-over {
+        border: 5px dashed #6B5500;
+        margin-top: -5px;
+        margin-bottom: -5px;
+    }
 }
 
-.drag-over {
-    border: 5px dashed #6B5500;
-    margin-top: -5px;
-    margin-bottom: -5px;
+.promo-circles {
+    height: 100%;
+    width: 100%;
+    position: relative;
 }
 
-.footer {
+.promo-circles .col-lg-4 {
+    transition: opacity 0.5s ease-in;
+    opacity: 0;
+}
+
+.promo-info {
+    margin-top: 50px;
+}
+
+.file-drop-field-decode {
+    display: inline-block;
+    padding: 20px 30px;
+    background-color: #00B2FF;
+    color: #000;
+    font-size: 24px;
+    &.drag-over {
+        border: 5px dashed #005B83;
+        margin-top: -5px;
+        margin-bottom: -5px;
+    }
+}
+
+footer {
     text-align: center;
-    padding: 30px 0;
-    // margin-top: 70px;
+    padding: 15px 0;
+    margin-top: 70px;
     border-top: 1px solid #E5E5E5;
 }
+
