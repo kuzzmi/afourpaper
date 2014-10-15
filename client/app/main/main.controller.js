@@ -131,6 +131,7 @@ angular.module('afourpaperApp')
                     console.log('percent: ' + parseInt(100.0 * evt.loaded / evt.total));
                 }).success(function(data, status, headers, config) {
                     // file is uploaded successfully
+                    console.log(data);
                     var element = angular.element('<a/>');
                     element.attr({
                         href: 'data:attachment/png;base64,' + encodeURIComponent(data.data),

@@ -33,20 +33,25 @@ module.exports = function(app) {
             var base64data;
 
             fs.readFile(absPath, function(err, data) {
-                console.log(absPath);
                 base64data = new Buffer(data).toString('base64');
 
-                res.set({
-                    'Content-Transfer-Encoding': 'base64'
-                });
-
-                res.send(base64data, 200);
-
-                // res.on('finish', function() {
-                // res.end();
-                // fs.unlinkSync(absPath);
-                // fs.unlinkSync('./' + req.files.file.path);
+                // res.set({
+                //     'Content-Transfer-Encoding': 'base64'
                 // });
+
+                res.send(base64data);
+                // console.log(base64data);
+
+                // setTimeout(function() {
+                //     res.send(200);
+                // }, 1000);
+
+                res.on('finish', function() {
+                    console.log('finished');
+                    // res.end();
+                    // fs.unlinkSync(absPath);
+                    // fs.unlinkSync('./' + req.files.file.path);
+                });
             });
         });
     });
@@ -66,20 +71,20 @@ module.exports = function(app) {
             fs.readFile(absPath, function(err, data) {
                 base64data = new Buffer(data).toString('base64');
 
-                res.set({
-                    'Content-Transfer-Encoding': 'base64'
-                });
+                // res.set({
+                //     'Content-Transfer-Encoding': 'base64'
+                // });
 
-                res.send({
+                res.json({
                     data: base64data,
                     filename: filename
                 });
 
-                res.on('finish', function() {
-                    res.end();
-                    // fs.unlinkSync(absPath);
-                    // fs.unlinkSync('./' + req.files.file.path);
-                });
+                // res.on('finish', function() {
+                //     res.end();
+                // fs.unlinkSync(absPath);
+                // fs.unlinkSync('./' + req.files.file.path);
+                // });
             });
         });
     });
