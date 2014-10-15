@@ -6,7 +6,7 @@
 
 var errors = require('./components/errors');
 var fs = require('fs');
-var Evernote = require('evernote').Evernote;
+// var Evernote = require('evernote').Evernote;
 module.exports = function(app) {
 
     // Insert routes below
